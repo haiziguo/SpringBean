@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:p="http://www.springframework.org/schema/p" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	<!-- 注意这句话，如果是singleton或者没有该句（默认情况）时，才会执行destroy-method指定的方法，如果是当前的prototype不会触发destroymethod的执行 -->
+	<bean id="myBean" class="com.lzp.mySpring.MyBean" init-method="init"
+		destroy-method="destroy" />
+
+	<bean id="myBean2" class="com.lzp.mySpring.MyBean2">
+		<constructor-arg value="12"></constructor-arg>
+		<constructor-arg type="com.lzp.mySpring.MyBean" ref="myBean"></constructor-arg>
+	</bean>
+	<bean id="factoryMethodBean" class="com.lzp.mySpring.FactoryMethodBean"
+		factory-method="getInstance"></bean>
+	<bean id="myBean3" class="com.lzp.mySpring.MyBean3">
+		<property name="simpleProperty" value="12"></property>
+		<property name="myBean" ref="myBean"></property>
+		<property name="list">
+			<list>
+				<ref bean="myBean" />
+			</list>
+		</property>
+		<property name="map">
+			<map>
+				<entry key="one" value-ref="myBean"></entry>
+			</map>
+		</property>
+		<property name="set">
+			<set>
+				<ref bean="myBean" />
+			</set>
+		</property>
+		<property name="properties">
+			<props>
+				<prop key="a">a</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="myBean4" class="com.lzp.mySpring.MyBean3"
+		p:simpleProperty="13" p:myBean-ref="myBean" />
+
+</beans>
